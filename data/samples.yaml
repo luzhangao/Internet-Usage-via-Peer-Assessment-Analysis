@@ -1,0 +1,29 @@
+# parent
+# ├── control
+# └── data
+
+# Questions
+questions: {
+  "Q1": "I know his/her gaming use (N/A?).",
+  "Q2": "He/she prefers gaming than socializing.",
+  "Q3": "His/her acquaintances and/or parents are concerned about his gaming.",
+  "Q4": "Gaming impair his/her health, hygiene and eating pattern.",
+  "Q5": "He/she avoids other activities?",
+  "Q6": "He/she tried to stop gaming but failed.",
+  "Q7": "Does gaming negatively affect his/her school performance?",
+  "Q8": "I rate his/her gaming as (0=never plays, 3=extremely harmful).",
+  "Q9": "Sex (M/W)."
+}
+
+
+# Train/val/test sets
+raw_path: ../data/  # raw data root dir
+train_set: images/train/  # train images
+train_set_file: gamingData_500.csv
+
+# train/val = 8/2
+train_size: 0.8
+
+
+model_saved_path: ../models/
+model_name: model
