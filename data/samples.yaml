@@ -18,8 +18,9 @@ questions: {
 
 # Train/val/test sets
 raw_path: ../data/  # raw data root dir
-train_set: train/  # train images
-train_set_file: RANDOM_Data_500.csv
+train_path: train/  # train images
+train_file: RANDOM_Data_500.csv
+train_dataset: train.npy
 
 # train/val = 8/2
 train_size: 0.8

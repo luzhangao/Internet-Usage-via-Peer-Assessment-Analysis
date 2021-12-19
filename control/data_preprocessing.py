@@ -17,11 +17,12 @@ paras = open_yaml("../data/samples.yaml")
 
 
 def preprocessing():
-    raw_data = paras["raw_path"] + paras["train_set"] + paras["train_set_file"]
+    raw_data = paras["raw_path"] + paras["train_path"] + paras["train_file"]
     df = pd.read_csv(raw_data, sep=";")
     # print(df)
     enc = OneHotEncoder(handle_unknown='ignore')
     res = enc.fit_transform(df).toarray()
+    np.save(paras["raw_path"] + paras["train_path"] + paras["train_dataset"], res)
     return res
 
 
