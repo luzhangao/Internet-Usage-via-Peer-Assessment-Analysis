@@ -10,7 +10,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
-from utils.gerenal_tools import open_yaml
+from utils.gerenal_tools import open_yaml, save_pickle
 
 
 paras = open_yaml("../data/samples.yaml")
@@ -19,10 +19,12 @@ paras = open_yaml("../data/samples.yaml")
 def preprocessing():
     raw_data = paras["raw_path"] + paras["train_path"] + paras["train_file"]
     df = pd.read_csv(raw_data, sep=";")
-    # print(df)
+    print(df)
     enc = OneHotEncoder(handle_unknown='ignore')
     res = enc.fit_transform(df).toarray()
+    feature_names = enc.get_feature_names_out()
     np.save(paras["raw_path"] + paras["train_path"] + paras["train_dataset"], res)
+    save_pickle(feature_names, paras["model_saved_path"] + paras["feature_names"])
     return res
 
 

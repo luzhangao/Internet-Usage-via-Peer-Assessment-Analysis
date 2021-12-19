@@ -8,6 +8,7 @@
 """
 
 import numpy as np
+import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.cluster import DBSCAN
 from sklearn.cluster import AffinityPropagation
@@ -57,7 +58,7 @@ def clustering(metric="euclidean", graph=False):
     db = davies_bouldin_score(X, y)  # DBI, less is better.
     print("metric: {metric}\nSilhouette Coefficient: {ss}\nCH index: {ch}\nDBI: {db}"
           .format(metric=metric, ss=ss, ch=ch, db=db))
-    return {"metric": metric, "ss": ss, "ch": ch, "db": db}
+    return {"metric": metric, "ss": ss, "ch": ch, "db": db, "train_dataset": X, "labels": y}
 
 
 def scatter(x, colors):
@@ -77,7 +78,6 @@ def scatter(x, colors):
 
 
 def run():
-    # correlation, hamming, yule, russellrao,
     metrics = ["euclidean", "minkowski", "cityblock", "seuclidean", "sqeuclidean", "cosine", "correlation", "hamming",
                "jaccard", "chebyshev", "canberra", "braycurtis", "yule", "matching", "dice", "kulsinski",
                "rogerstanimoto", "russellrao", "sokalmichener", "sokalsneath"]
@@ -92,11 +92,19 @@ def run():
         sss[metric] = ss
         chs[metric] = ch
         dbs[metric] = db
+    df = pd.DataFrame({"Silhouette Coefficient": sss, "Calinski-Harabasz Index": chs, "Davies Bouldin Score": dbs})
+    df = df.applymap(lambda x: round(x, 4))
+    print(df)
+    df.to_csv(paras["raw_path"] + paras["train_path"] + "intrinsic_metrics_of_clustering.csv")
     print(sorted(sss.items(), key=lambda item: item[1], reverse=True))
     print(sorted(chs.items(), key=lambda item: item[1], reverse=True))
     print(sorted(dbs.items(), key=lambda item: item[1]))
-
-    # silhouette_score, calinski_harabasz_score, davies_bouldin_score
+    """
+    [('yule', 0.16541165363689975), ('correlation', 0.08996816407584957), ('cosine', 0.08754904889327006), ('cityblock', 0.08205540082317561), ('sqeuclidean', 0.08205540082317561), ('canberra', 0.08205540082317561), ('hamming', 0.07312980311971097), ('matching', 0.07312980311971097), ('braycurtis', 0.07066540166698916), ('dice', 0.07066540166698916), ('rogerstanimoto', 0.06398812656748301), ('sokalmichener', 0.06398812656748301), ('jaccard', 0.055954158770970125), ('euclidean', 0.0450879402948254), ('minkowski', 0.0450879402948254), ('sokalsneath', 0.030645091957197765), ('seuclidean', 0.025075451408111054), ('russellrao', 0.0194645244351754), ('kulsinski', 0.014695369114768549), ('chebyshev', 4.819277108433795e-05)]
+    [('jaccard', 24.521762199327103), ('russellrao', 24.35660313809395), ('correlation', 24.20168099388329), ('euclidean', 24.155624642273562), ('minkowski', 24.155624642273562), ('kulsinski', 24.155624642273562), ('rogerstanimoto', 24.155624642273562), ('sokalmichener', 24.155624642273562), ('cosine', 22.98228797650974), ('sokalsneath', 22.924972407570134), ('cityblock', 22.91646894776369), ('sqeuclidean', 22.91646894776369), ('canberra', 22.91646894776369), ('yule', 22.099512601765632), ('hamming', 19.343675851590003), ('matching', 19.343675851590003), ('braycurtis', 18.195466213233786), ('dice', 18.195466213233786), ('seuclidean', 12.223736493914538), ('chebyshev', 0.9771892802983222)]
+    [('chebyshev', 1.0093828432969085), ('correlation', 4.339322511437038), ('cosine', 4.383933631893184), ('russellrao', 4.3887587732246525), ('jaccard', 4.400795973255812), ('euclidean', 4.532878331745464), ('minkowski', 4.532878331745464), ('kulsinski', 4.532878331745464), ('rogerstanimoto', 4.532878331745464), ('sokalmichener', 4.532878331745464), ('sokalsneath', 4.571477674641366), ('cityblock', 4.6273712014838475), ('sqeuclidean', 4.6273712014838475), ('canberra', 4.6273712014838475), ('yule', 4.726442376677368), ('braycurtis', 4.845501291712349), ('dice', 4.845501291712349), ('hamming', 4.855974043657837), ('matching', 4.855974043657837), ('seuclidean', 5.244403669628422)]
+    Correlation is the best choice. 
+    """
 
 
 if __name__ == '__main__':

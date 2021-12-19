@@ -22,9 +22,7 @@ train_path: train/  # train images
 train_file: RANDOM_Data_500.csv
 train_dataset: train.npy
 
-# train/val = 8/2
-train_size: 0.8
-
 
 model_saved_path: ../models/
 model_name: model
+feature_names: feature_names.pkl
