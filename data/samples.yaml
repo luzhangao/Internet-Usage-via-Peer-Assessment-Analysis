@@ -19,8 +19,12 @@ questions: {
 # Train/val/test sets
 raw_path: ../data/  # raw data root dir
 train_path: train/  # train images
-train_file: RANDOM_Data_500.csv
+# train_file: RANDOM_Data_500.csv
+train_file: gamingData_Excel.xlsx  # The latest data file
 train_dataset: train.npy
+
+continuous_columns: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8"]
+discrete_columns: ["Q9", "Type of person"]
 
 
 model_saved_path: ../models/
