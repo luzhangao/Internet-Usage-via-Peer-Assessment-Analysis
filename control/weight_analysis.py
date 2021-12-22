@@ -18,7 +18,7 @@ paras = open_yaml("../data/samples.yaml")
 
 
 def weight_importance():
-    temp = clustering("correlation")
+    temp = clustering()
     X = temp["train_dataset"]
     y = temp["labels"]
     print(X.shape, y.shape)
