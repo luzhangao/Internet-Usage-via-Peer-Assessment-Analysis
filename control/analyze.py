@@ -19,7 +19,7 @@ from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 import matplotlib.pyplot as plt
 import seaborn as sns
-from utils.gerenal_tools import open_yaml
+from utils.gerenal_tools import open_yaml, save_pickle, open_pickle
 
 
 paras = open_yaml("../data/samples.yaml")
@@ -34,7 +34,7 @@ def clustering(metric="euclidean", graph=False):
     """
     X = np.load(paras["raw_path"] + paras["train_path"] + paras["train_dataset"])
     # print(X)
-    cm = KMeans(n_clusters=4).fit(X)
+    cm = KMeans(n_clusters=2).fit(X)
     # cm = AffinityPropagation(random_state=5).fit(X)
     # cm = MeanShift(bandwidth=2.5).fit(X)
     # cm = SpectralClustering(n_clusters=5, assign_labels='discretize', random_state=0).fit(X)
@@ -43,6 +43,12 @@ def clustering(metric="euclidean", graph=False):
     y = cm.labels_
     # y = np.array([1 - i for i in y])
     # print(y)
+
+    # Save the results for further analysis.
+    df = open_pickle(paras["raw_path"] + paras["train_path"] + paras["raw_data_file"])
+    df["predict_label"] = y
+    print(df)
+    df.to_excel(paras["raw_path"] + paras["temp_file"])
 
     if graph:
         sns.set_style('darkgrid')
@@ -59,11 +65,12 @@ def clustering(metric="euclidean", graph=False):
     db = davies_bouldin_score(X, y)  # DBI, less is better.
     print("metric: {metric}\nSilhouette Coefficient: {ss}\nCH index: {ch}\nDBI: {db}"
           .format(metric=metric, ss=ss, ch=ch, db=db))
+
     return {"metric": metric, "ss": ss, "ch": ch, "db": db, "train_dataset": X, "labels": y}
 
 
 def scatter(x, colors):
-    palette = np.array(sns.color_palette("hls", 5))
+    palette = np.array(sns.color_palette("hls", 6))
 
     f = plt.figure(figsize=(8, 8))
     # ax = plt.axes(projection="3d")
@@ -109,5 +116,6 @@ def run():
 
 
 if __name__ == '__main__':
-    clustering("correlation", graph=True)
+    # clustering("correlation", graph=True)
+    clustering(graph=True)
     # run()
