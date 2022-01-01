@@ -21,10 +21,13 @@ def preprocessing():
     # df = pd.read_csv(raw_data, sep=";")
     df = pd.read_excel(raw_data)
     # Remove all data from respondents: parents (Dr.K)
-    df = df[df["Type of person"] != "parents"]
+    # df = df[df["Type of person"] != "parents"]
+    df = df[df["Type of person"] == "children"]
+    # df = df[df["Type of person"] == "students"]
     # Fill nan with mean
     df = df.fillna(df.mean(numeric_only=True))
     print(df)
+    save_pickle(df, paras["raw_path"] + paras["train_path"] + paras["raw_data_file"])
     # Split the dataframe
     cdf = df[paras["continuous_columns"]]
     ddf = df[paras["discrete_columns"]]
@@ -39,6 +42,9 @@ def preprocessing():
 
     # print(carray.shape, darray.shape)
     res = np.concatenate([carray, darray], axis=1)
+    print(res)
+    for row in res:
+        print(row)
     feature_names = np.concatenate([c_feature_names, d_feature_names])
     # print(res.shape)
     # print(feature_names)
